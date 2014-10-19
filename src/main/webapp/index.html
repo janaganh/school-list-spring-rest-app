@@ -1,0 +1,157 @@
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+		<!-- Bootstrap core CSS -->
+		<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/backgrid/backgrid.min.css" type="text/css" />
+        
+		<script src="assets/js/jquery-1.11.1.js"></script>
+		<script src="assets/js/underscore.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/backbone.js" /></script>
+        <script src="assets/backgrid/backgrid.min.js"/></script>
+                
+    </head>
+    <body onload="render()">
+	
+	<div class="container">
+	<div class="page-header">
+        <h1>Bootstrap grid examples</h1>
+        <p class="lead">Basic grid layouts to get you familiar with building within the Bootstrap grid system.</p>
+      </div>
+   
+      <hr>
+	 <div class="row">
+	  <div class="col-xs-10">
+        <div>TODO write content</div>
+  
+        <div id="example-2-result" class="backgrid-container"></div>
+          <script>
+              var School = Backbone.Model.extend({});
+			
+               
+              var Schools = Backbone.Collection.extend({
+                intialize:function(options){
+					this.options = options;					
+				},									
+				model: School,
+                url:function(options){
+					 var url =  "http://localhost:8080/schoolapp-rest-0.1.0/schools";
+					//if (options != 'undefined')
+						//url = "http://localhost:8080/schoolapp-rest-0.1.0/schools/search/findBySubject?subject="+options.subject;
+					return url;
+						
+				},
+				parse: function(response) {
+					response = response._embedded.schools;					
+					return response;
+				}					
+              });
+               
+			  function render(option)	 {
+				var schools = new Schools({"subject":option});
+            
+				var columns = [ 
+                  {
+                  name: "school",
+                  label: "Name",
+                  // The cell type can be a reference of a Backgrid.Cell subclass, any Backgrid.Cell subclass instances like *id* above, or a string
+                  cell: "string" // This is converted to "StringCell" and a corresponding class in the Backgrid package namespace is looked up
+                 },{
+                  name: "latestY3",
+                  label: "Y3",
+                  cell: "integer" // An integer cell is a number cell that displays humanized integers
+                }, 
+				 {
+                  name: "latestY5",
+                  label: "Population",
+                  cell: "integer" // An integer cell is a number cell that displays humanized integers
+                }, 
+				 {
+                  name: "latestY7",
+                  label: "Population",
+                  cell: "integer" // An integer cell is a number cell that displays humanized integers
+                }, 
+				{
+                  name: "latestY9",
+                  label: "Population",
+                  cell: "integer" // An integer cell is a number cell that displays humanized integers
+                } ,
+				 {
+                  name: "rawGainY3Y5",
+                  label: "Population",
+                  cell: "integer" // An integer cell is a number cell that displays humanized integers
+                }, 
+				{
+                  name: "factoredGainY3Y5",
+                  label: "Population",
+                  cell: "integer" // An integer cell is a number cell that displays humanized integers
+                } ,
+				 {
+                  name: "glgY3Y5",
+                  label: "Population",
+                  cell: "integer" // An integer cell is a number cell that displays humanized integers
+                } 
+				
+                /*
+                {
+                  name: "percentage",
+                  label: "% of World Population",
+                  cell: "number" // A cell type for floating point value, defaults to have a precision 2 decimal numbers
+                }, {
+                  name: "date",
+                  label: "Date",
+                  cell: "date"
+                }, {
+                  name: "url",
+                  label: "URL",
+                  cell: "uri" // Renders the value in an HTML anchor element
+              }
+              */
+              ];
+
+              // Initialize a new Grid instance
+              var grid = new Backgrid.Grid({
+                columns: columns,
+                collection: schools
+              });
+
+              // Render the grid and attach the root to your HTML document
+              $("#example-2-result").append(grid.render().el);
+
+              // Fetch some countries from the url
+              schools.fetch({reset: true});
+		}
+		    
+		 
+    </script>
+	</div>
+	<div class="col-xs-2">
+		<!-- Single button -->
+ <div class="input-group-btn">
+     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+       Subject
+       <span class="caret"></span>
+     </button>
+     <ul class="dropdown-menu pull-left">
+	   
+       <li><a href="#" onclick="render('numeracy')" data-value="bar">Numeracy</a></li>
+       <li><a href="#" onclick="render('reading')" data-value="baz">Readig</a></li>
+	   <li><a href="#" data-value="bar">Spelling</a></li>       
+     </ul>
+   </div>
+	
+	</div>
+	</div>
+	</div>
+	<script>
+	$(".dropdown-menu li a").click(function(){		
+		$(this).parents(".input-group-btn").find('.btn').html($(this).text()+" <span class=\"caret\"></span>");
+		$(this).parents(".input-group-btn").find('.btn').val($(this).text());
+	});
+	
+	</script>
+    </body>
+</html>
